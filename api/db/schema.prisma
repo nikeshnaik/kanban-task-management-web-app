@@ -8,11 +8,43 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Board {
+
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  status      String    @default("todo")
+  subtasks    Subtask[]
+  board_name  String
+  column_name String
+
 }
+
+type Subtask {
+
+  id          String  @map("_id") @db.ObjectId
+  title       String
+  isCompleted Boolean @default(false)
+
+}
+
+// "title": "Build UI for onboarding flow",
+//       "description": "",
+//       "status": "Todo",
+//       "subtasks": [
+//           {
+//               "title": "Sign up page",
+//               "isCompleted": true
+//           },
+//           {
+//               "title": "Sign in page",
+//               "isCompleted": false
+//           },
+//           {
+//               "title": "Welcome page",
+//               "isCompleted": false
+//           }
+//       ],
+//       "column_name": "Todo",
+//       "board_name": "Platform Launch"
+//   },
