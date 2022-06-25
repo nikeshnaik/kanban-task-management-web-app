@@ -1,50 +1,39 @@
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = "native"
+  provider = "prisma-client-js"
 }
 
-model Board {
+model Task {
 
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          Int       @id @default(autoincrement())
   title       String
-  description String
-  status      String    @default("todo")
-  subtasks    Subtask[]
+  description String?
+  status      String
   board_name  String
   column_name String
+  createdAt   DateTime? @default(now())
 
+  Subtask Subtask[]
 }
 
-type Subtask {
+model Subtask {
 
-  id          String  @map("_id") @db.ObjectId
+  id          Int     @id @default(autoincrement())
   title       String
   isCompleted Boolean @default(false)
 
+  task   Task? @relation(fields: [taskId], references: [id])
+  taskId Int?
 }
 
-// "title": "Build UI for onboarding flow",
-//       "description": "",
-//       "status": "Todo",
-//       "subtasks": [
-//           {
-//               "title": "Sign up page",
-//               "isCompleted": true
-//           },
-//           {
-//               "title": "Sign in page",
-//               "isCompleted": false
-//           },
-//           {
-//               "title": "Welcome page",
-//               "isCompleted": false
-//           }
-//       ],
-//       "column_name": "Todo",
-//       "board_name": "Platform Launch"
-//   },
+model Metadata {
+
+  id         Int    @id @default(autoincrement())
+  board_name String
+  user_name  String
+}
