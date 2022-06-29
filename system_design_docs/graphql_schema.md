@@ -78,21 +78,25 @@
 ## Client Side GraphQL Queries
 
 
-###### GetTodos
+###### GetSubtaskById
 ```
 
-	query {
+	query getTaskWithSubtask{
 
-		task{
+		task(id: 10){
 
 			title
-			task_id
-			status(filter:"todo")
-			subtask(filter : { isCompleted: true}){
-				count			
-			}
+			id
+			status
+			description
+			board_name
 			subtask{
-				count
+				id
+				taskId
+				title
+				isCompleted
+				description
+				
 			}
 
 		}
@@ -102,12 +106,27 @@
 ```
 
 
-#### UpdateTodos
+#### GetSubtaskById
 
 ```
-
-	 
 	
-
+		query GetSubtaskById {
+		  	
+		  subtask(id: 1) {
+		    id
+		    title
+		    isCompleted
+		    taskId
+		    task {
+		      title
+		      id
+		      description
+		    }
+		  }
+		  
+		}
 
 ```
+
+
+
